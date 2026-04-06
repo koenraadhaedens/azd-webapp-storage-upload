@@ -1,0 +1,39 @@
+@page
+@model UploadModel
+@{
+    ViewData["Title"] = "Upload Files";
+}
+
+<div class="portal-container">
+    <div class="portal-card wide-card">
+        <div class="portal-header">
+            <div class="lock-icon">📤</div>
+            <h1>Secure File Upload</h1>
+            <p class="subtitle">Authenticated as <strong>@Model.AuthenticatedEmail</strong></p>
+        </div>
+
+        @if (Model.ErrorMessage is not null)
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Select File</label>
+                <input type="file"
+                       id="file"
+                       name="file"
+                       class="form-control"
+                       required />
+                <small class="form-hint">Files are stored securely in Azure Blob Storage.</small>
+            </div>
+            <button type="submit" class="btn-primary">
+                Upload Securely
+            </button>
+        </form>
+
+        <div class="security-badge">
+            <span>🔒 Files encrypted in transit (TLS 1.2+) and at rest (Azure Storage SSE)</span>
+        </div>
+    </div>
+</div>

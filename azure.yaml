@@ -1,0 +1,11 @@
+name: tdd-azd-secure-upload-portal
+metadata:
+  template: tddazd-secure-upload-portal@1.0.0
+infra:
+  provider: bicep
+  path: ./infra
+services:
+  web:
+    project: ./src/SecureUploadPortal.Web
+    host: appservice
+    language: csharp

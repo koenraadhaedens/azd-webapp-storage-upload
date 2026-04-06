@@ -1,0 +1,47 @@
+@page
+@model VerifyModel
+@{
+    ViewData["Title"] = "Enter OTP";
+}
+
+<div class="portal-container">
+    <div class="portal-card">
+        <div class="portal-header">
+            <div class="lock-icon">✉️</div>
+            <h1>Check Your Email</h1>
+            <p class="subtitle">Enter the 6-digit code sent to <strong>@Model.MaskedEmail</strong></p>
+        </div>
+
+        @if (Model.ErrorMessage is not null)
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div class="form-group">
+                <label for="otp">One-Time Password</label>
+                <input type="text"
+                       id="otp"
+                       name="otp"
+                       class="form-control otp-input"
+                       placeholder="000000"
+                       maxlength="6"
+                       pattern="[0-9]{6}"
+                       inputmode="numeric"
+                       autocomplete="one-time-code"
+                       required />
+            </div>
+            <button type="submit" class="btn-primary">
+                Verify Code
+            </button>
+        </form>
+
+        <div class="actions-row">
+            <a href="/" class="link-secondary">← Use a different email</a>
+        </div>
+
+        <div class="info-box">
+            <p>⏰ The code expires in 10 minutes. Check your spam folder if you haven't received it.</p>
+        </div>
+    </div>
+</div>

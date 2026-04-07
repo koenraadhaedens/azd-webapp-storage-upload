@@ -84,6 +84,8 @@ module appService 'br/public:avm/res/web/site:0.12.0' = {
       STORAGE_ACCOUNT_NAME: storageAccountName
       LOGIC_APP_URL: logicAppUrl
       ASPNETCORE_ENVIRONMENT: 'Production'
+      WEBSITE_RUN_FROM_PACKAGE: '1'
+      SCM_DO_BUILD_DURING_DEPLOYMENT: 'false'
     }
     diagnosticSettings: [
       {

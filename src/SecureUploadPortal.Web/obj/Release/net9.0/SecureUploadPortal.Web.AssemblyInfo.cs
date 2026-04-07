@@ -12,7 +12,7 @@ using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("0fed8fdb-665e-41d4-ba59-910206b3bac2")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SecureUploadPortal.Web")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0449877a55e1a23114b4b8d997de8668413095a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("SecureUploadPortal.Web")]

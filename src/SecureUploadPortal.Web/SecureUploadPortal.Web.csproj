@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SecureUploadPortal.Web</RootNamespace>
     <AssemblyName>SecureUploadPortal.Web</AssemblyName>
+    <UserSecretsId>0fed8fdb-665e-41d4-ba59-910206b3bac2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

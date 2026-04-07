@@ -17,6 +17,14 @@
             <div class="alert alert-danger">@Model.ErrorMessage</div>
         }
 
+        @if (Model.DemoOtp is not null)
+        {
+            <div class="alert alert-success">
+                <strong>Demo mode</strong> — no email connector configured.<br />
+                Your OTP is: <strong style="font-size:1.2rem;letter-spacing:0.15em">@Model.DemoOtp</strong>
+            </div>
+        }
+
         <form method="post">
             <div class="form-group">
                 <label for="otp">One-Time Password</label>

@@ -27,12 +27,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
     definition: {
       '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
       contentVersion: '1.0.0.0'
-      parameters: {
-        '$connections': {
-          defaultValue: {}
-          type: 'Object'
-        }
-      }
+      parameters: {}
       triggers: {
         manual: {
           type: 'Request'
@@ -50,69 +45,19 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
         }
       }
       actions: {
-        Send_an_email: {
-          type: 'ApiConnection'
-          inputs: {
-            host: {
-              connection: {
-                name: '@parameters(\'$connections\')[\'office365\'][\'connectionId\']'
-              }
-            }
-            method: 'post'
-            path: '/v2/Mail'
-            body: {
-              To: '@triggerBody()?[\'email\']'
-              Subject: 'Your Secure Upload Portal OTP'
-              Body: '<p>Your one-time password is: <strong>@{triggerBody()?[\'otp\']}</strong></p><p>This code expires in 10 minutes. Do not share it with anyone.</p>'
-              Importance: 'Normal'
-            }
-          }
-          runAfter: {}
-        }
         Response: {
           type: 'Response'
           kind: 'Http'
           inputs: {
             statusCode: 200
-            body: { message: 'OTP email sent.' }
+            body: { message: 'OTP received.' }
           }
-          runAfter: {
-            Send_an_email: ['Succeeded']
-          }
+          runAfter: {}
         }
       }
       outputs: {}
     }
-    parameters: {
-      '$connections': {
-        value: {
-          office365: {
-            connectionId: office365ApiConnection.id
-            connectionName: 'office365'
-            id: subscriptionResourceId('Microsoft.Web/locations/managedApis', location, 'office365')
-          }
-        }
-      }
-    }
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Office 365 API Connection placeholder
-// The connection requires manual authorization via the Azure Portal or
-// az logic workflow run CLI after initial deploy.
-// ---------------------------------------------------------------------------
-
-resource office365ApiConnection 'Microsoft.Web/connections@2016-06-01' = {
-  name: 'office365-${name}'
-  location: location
-  tags: tags
-  properties: {
-    displayName: 'Office 365 - OTP Email Sender'
-    api: {
-      id: subscriptionResourceId('Microsoft.Web/locations/managedApis', location, 'office365')
-    }
-    parameterValues: {}
+    parameters: {}
   }
 }
 

@@ -12,7 +12,6 @@ public class VerifyModel : PageModel
 
     public string? ErrorMessage { get; private set; }
     public string MaskedEmail { get; private set; } = string.Empty;
-    public string? DemoOtp { get; private set; }
 
     public VerifyModel(ILogger<VerifyModel> logger)
     {
@@ -26,7 +25,6 @@ public class VerifyModel : PageModel
             return RedirectToPage("/Index");
 
         MaskedEmail = MaskEmail(email);
-        DemoOtp = HttpContext.Session.GetString("OtpCode");
         return Page();
     }
 
@@ -37,7 +35,6 @@ public class VerifyModel : PageModel
             return RedirectToPage("/Index");
 
         MaskedEmail = MaskEmail(email);
-        DemoOtp = HttpContext.Session.GetString("OtpCode");
 
         var storedOtp = HttpContext.Session.GetString("OtpCode");
         var generatedAtStr = HttpContext.Session.GetString("OtpGeneratedAt");

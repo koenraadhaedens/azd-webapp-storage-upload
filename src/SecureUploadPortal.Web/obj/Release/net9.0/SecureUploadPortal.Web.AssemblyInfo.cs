@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SecureUploadPortal.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcf47530dea8d5002bc2770e52863259968e2c7b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68d485e1c85562badcdfbe48a06ede2666db431f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SecureUploadPortal.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SecureUploadPortal.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

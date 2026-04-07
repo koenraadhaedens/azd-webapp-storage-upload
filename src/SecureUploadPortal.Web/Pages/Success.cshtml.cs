@@ -5,16 +5,16 @@ namespace SecureUploadPortal.Web.Pages;
 
 public class SuccessModel : PageModel
 {
-    public string FileName { get; private set; } = string.Empty;
-    public string BlobName { get; private set; } = string.Empty;
+    public IReadOnlyList<(string FileName, string BlobName)> UploadedFiles { get; private set; } = [];
 
-    public IActionResult OnGet([FromQuery] string? fileName, [FromQuery] string? blobName)
+    public IActionResult OnGet([FromQuery] string? fileNames, [FromQuery] string? blobRefs)
     {
         if (HttpContext.Session.GetString("Authenticated") != "true")
             return RedirectToPage("/Index");
 
-        FileName = fileName ?? string.Empty;
-        BlobName = blobName ?? string.Empty;
+        var names = fileNames?.Split('|') ?? [];
+        var refs  = blobRefs?.Split('|')  ?? [];
+        UploadedFiles = names.Zip(refs, (n, r) => (n, r)).ToList();
         return Page();
     }
 }

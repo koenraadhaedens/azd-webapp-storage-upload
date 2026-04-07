@@ -40,17 +40,11 @@ public class IndexModel : PageModel
         HttpContext.Session.SetString("OtpGeneratedAt", DateTimeOffset.UtcNow.ToString("O"));
         HttpContext.Session.SetInt32("OtpAttempts", 0);
 
-        try
-        {
-            await _otpEmailService.SendOtpAsync(email, otp);
+        var emailSent = await _otpEmailService.SendOtpAsync(email, otp);
+        if (emailSent)
             _logger.LogInformation("OTP dispatched for email {Email}.", email);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to dispatch OTP for {Email}.", email);
-            ErrorMessage = "Failed to send OTP. Please try again in a moment.";
-            return Page();
-        }
+        else
+            _logger.LogWarning("OTP email could not be sent for {Email} — proceeding to verify page.", email);
 
         return RedirectToPage("/Verify");
     }

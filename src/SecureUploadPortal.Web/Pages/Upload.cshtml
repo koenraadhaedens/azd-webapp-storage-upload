@@ -19,13 +19,14 @@
 
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="file">Select File</label>
+                <label for="files">Select Files</label>
                 <input type="file"
-                       id="file"
-                       name="file"
+                       id="files"
+                       name="files"
                        class="form-control"
+                       multiple
                        required />
-                <small class="form-hint">Files are stored securely in Azure Blob Storage.</small>
+                <small class="form-hint">Hold Ctrl / ⌘ to select multiple files. Stored securely in Azure Blob Storage.</small>
             </div>
             <button type="submit" class="btn-primary">
                 Upload Securely

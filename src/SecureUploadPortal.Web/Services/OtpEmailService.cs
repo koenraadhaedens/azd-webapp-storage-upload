@@ -13,21 +13,34 @@ public class OtpEmailService
         _logger = logger;
     }
 
-    public async Task SendOtpAsync(string email, string otp, CancellationToken cancellationToken = default)
+    public async Task<bool> SendOtpAsync(string email, string otp, CancellationToken cancellationToken = default)
     {
-        var logicAppUrl = _configuration["LOGIC_APP_URL"]
-            ?? throw new InvalidOperationException("LOGIC_APP_URL configuration is required.");
-
-        var payload = new { email, otp };
-        var response = await _httpClient.PostAsJsonAsync(logicAppUrl, payload, cancellationToken);
-
-        if (!response.IsSuccessStatusCode)
+        var logicAppUrl = _configuration["LOGIC_APP_URL"];
+        if (string.IsNullOrEmpty(logicAppUrl))
         {
-            _logger.LogError("Logic App OTP trigger returned {StatusCode} for email {Email}",
-                response.StatusCode, email);
-            throw new HttpRequestException($"OTP email delivery failed with status {response.StatusCode}.");
+            _logger.LogWarning("LOGIC_APP_URL is not configured — OTP email not sent for {Email}.", email);
+            return false;
         }
 
-        _logger.LogInformation("OTP sent to {Email} via Logic App.", email);
+        try
+        {
+            var payload = new { email, otp };
+            var response = await _httpClient.PostAsJsonAsync(logicAppUrl, payload, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError("Logic App OTP trigger returned {StatusCode} for {Email}.",
+                    response.StatusCode, email);
+                return false;
+            }
+
+            _logger.LogInformation("OTP sent to {Email} via Logic App.", email);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to dispatch OTP email for {Email}.", email);
+            return false;
+        }
     }
 }

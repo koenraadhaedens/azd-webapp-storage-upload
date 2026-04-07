@@ -9,15 +9,16 @@
         <div class="portal-header">
             <div class="success-icon">✅</div>
             <h1>Upload Successful</h1>
-            <p class="subtitle">Your file has been stored securely.</p>
+            <p class="subtitle">@Model.UploadedFiles.Count file(s) stored securely.</p>
         </div>
 
         <div class="success-details">
             <dl>
-                <dt>File name</dt>
-                <dd>@Model.FileName</dd>
-                <dt>Blob reference</dt>
-                <dd>@Model.BlobName</dd>
+                @foreach (var (fileName, blobName) in Model.UploadedFiles)
+                {
+                    <dt>@fileName</dt>
+                    <dd>@blobName</dd>
+                }
             </dl>
         </div>
 

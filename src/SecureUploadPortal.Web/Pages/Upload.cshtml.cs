@@ -27,26 +27,28 @@ public class UploadModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(IFormFile file)
+    public async Task<IActionResult> OnPostAsync(IReadOnlyList<IFormFile> files)
     {
         if (HttpContext.Session.GetString("Authenticated") != "true")
             return RedirectToPage("/Index");
 
         AuthenticatedEmail = HttpContext.Session.GetString("AuthenticatedEmail") ?? string.Empty;
 
-        if (file is null || file.Length == 0)
+        var nonEmpty = files?.Where(f => f.Length > 0).ToList() ?? [];
+        if (nonEmpty.Count == 0)
         {
-            ErrorMessage = "Please select a file to upload.";
+            ErrorMessage = "Please select at least one file to upload.";
             return Page();
         }
 
         try
         {
-            var blobName = await _blobUploadService.UploadFileAsync(file);
-            _logger.LogInformation("File {FileName} uploaded by {Email} as blob {BlobName}.",
-                file.FileName, AuthenticatedEmail, blobName);
+            var blobNames = await _blobUploadService.UploadFilesAsync(nonEmpty);
+            _logger.LogInformation("{Count} file(s) uploaded by {Email}.", blobNames.Count, AuthenticatedEmail);
 
-            return RedirectToPage("/Success", new { fileName = file.FileName, blobName });
+            var fileNames = string.Join("|", nonEmpty.Select(f => f.FileName));
+            var blobRefs  = string.Join("|", blobNames);
+            return RedirectToPage("/Success", new { fileNames, blobRefs });
         }
         catch (Exception ex)
         {

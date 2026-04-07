@@ -32,9 +32,6 @@ param vnetIntegrationSubnetId string
 @description('Principal ID of the deploying user (for data plane role assignment).')
 param principalId string
 
-@description('Resource ID of the storage account (for role assignment scope).')
-param storageAccountResourceId string
-
 // ---------------------------------------------------------------------------
 // Role Definition IDs
 // ---------------------------------------------------------------------------
@@ -115,7 +112,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' existing 
 // ---------------------------------------------------------------------------
 
 resource appServiceStorageRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccount.id, appService.outputs.resourceId, storageBlobDataContributorRoleId)
+  name: guid(storageAccount.id, appName, storageBlobDataContributorRoleId)
   scope: storageAccount
   properties: {
     roleDefinitionId: subscriptionResourceId(

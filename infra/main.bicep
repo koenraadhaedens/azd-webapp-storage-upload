@@ -8,7 +8,6 @@ targetScope = 'resourceGroup'
 param location string = 'eastus2'
 
 @description('Short environment name used in resource names.')
-@maxLength(8)
 param environment string = 'dev'
 
 @description('Short project name used in resource names.')
@@ -32,7 +31,6 @@ param tags object = {
 
 var uniqueSuffix = take(uniqueString(resourceGroup().id), 6)
 
-var kvName = 'kv-${take(projectName, 8)}-${take(environment, 3)}-${uniqueSuffix}'
 var stName = 'st${take(replace(projectName, '-', ''), 8)}${take(environment, 3)}${uniqueSuffix}'
 var aspName = 'asp-${projectName}-${environment}'
 var appName = 'app-${projectName}-${environment}-${uniqueSuffix}'
@@ -102,7 +100,6 @@ module appService 'modules/appservice.bicep' = {
     logicAppUrl: logicApp.outputs.triggerUrl
     vnetIntegrationSubnetId: network.outputs.appServiceSubnetId
     principalId: principalId
-    storageAccountResourceId: storage.outputs.resourceId
   }
 }
 

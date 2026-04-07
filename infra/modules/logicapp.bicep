@@ -41,18 +41,28 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
             schema: {
               type: 'object'
               properties: {
-                email: { type: 'string' }
-                otp: { type: 'string' }
+                to: { type: 'string' }
+                subject: { type: 'string' }
+                body: { type: 'string' }
               }
-              required: ['email', 'otp']
             }
           }
         }
       }
       actions: {
-        Compose_Body: {
-          type: 'Compose'
-          inputs: '@triggerBody()'
+        Parse_Input: {
+          type: 'ParseJson'
+          inputs: {
+            content: '@triggerBody()'
+            schema: {
+              type: 'object'
+              properties: {
+                to: { type: 'string' }
+                subject: { type: 'string' }
+                body: { type: 'string' }
+              }
+            }
+          }
           runAfter: {}
         }
         Send_an_email: {
@@ -66,14 +76,14 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
             method: 'post'
             path: '/v2/Mail'
             body: {
-              To: '@{outputs(\'Compose_Body\')?[\'email\']}'
-              Subject: 'Your Secure Upload Portal OTP'
-              Body: '<p>Your one-time password is: <strong>@{outputs(\'Compose_Body\')?[\'otp\']}</strong></p><p>This code expires in 10 minutes. Do not share it with anyone.</p>'
+              To: '@{body(\'Parse_Input\')?[\'to\']}'
+              Subject: '@{body(\'Parse_Input\')?[\'subject\']}'
+              Body: '@{body(\'Parse_Input\')?[\'body\']}'
               Importance: 'Normal'
             }
           }
           runAfter: {
-            Compose_Body: ['Succeeded']
+            Parse_Input: ['Succeeded']
           }
         }
         Response: {

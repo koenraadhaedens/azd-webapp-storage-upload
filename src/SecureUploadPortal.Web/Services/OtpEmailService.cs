@@ -24,8 +24,15 @@ public class OtpEmailService
 
         try
         {
-            var payload = new { email, otp };
-            var response = await _httpClient.PostAsJsonAsync(logicAppUrl, payload, cancellationToken);
+            var payload = new
+            {
+                to = email,
+                subject = "Your Secure Upload Portal OTP",
+                body = $"<p>Your one-time password is: <strong>{otp}</strong></p><p>This code expires in 10 minutes. Do not share it with anyone.</p>"
+            };
+            var json = System.Text.Json.JsonSerializer.Serialize(payload);
+            using var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(logicAppUrl, content, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {

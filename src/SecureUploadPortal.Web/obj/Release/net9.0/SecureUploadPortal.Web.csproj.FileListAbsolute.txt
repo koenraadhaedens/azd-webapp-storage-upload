@@ -44,3 +44,4 @@ C:\temp\azd-webapp-storage-upload\src\SecureUploadPortal.Web\obj\Release\net9.0\
 C:\temp\azd-webapp-storage-upload\src\SecureUploadPortal.Web\obj\Release\net9.0\SecureUploadPortal.Web.pdb
 C:\temp\azd-webapp-storage-upload\src\SecureUploadPortal.Web\obj\Release\net9.0\SecureUploadPortal.Web.genruntimeconfig.cache
 C:\temp\azd-webapp-storage-upload\src\SecureUploadPortal.Web\obj\Release\net9.0\ref\SecureUploadPortal.Web.dll
+C:\temp\azd-webapp-storage-upload\src\SecureUploadPortal.Web\obj\Release\net9.0\compressed\gi5xds02iq-2hmbwav6qu.gz

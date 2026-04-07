@@ -1,0 +1,39 @@
+# Azure Developer CLI
+.azure/
+
+# Build outputs
+bin/
+obj/
+out/
+publish/
+
+# .NET
+*.user
+*.suo
+.vs/
+.vscode/
+*.swp
+*.DS_Store
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+
+# ASP.NET
+appsettings.Development.json
+
+# Logs
+*.log
+logs/
+
+# Azure Functions / Logic Apps
+local.settings.json
+
+# Bicep compiled output
+*.json
+!azure.yaml
+
+# OS
+Thumbs.db

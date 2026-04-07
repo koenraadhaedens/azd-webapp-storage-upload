@@ -18,8 +18,8 @@ param logAnalyticsWorkspaceName string
 @description('Resource ID of the subnet for the private endpoint.')
 param privateEndpointSubnetId string
 
-@description('Resource ID of the VNet (for DNS zone link).')
-param vnetId string
+@description('Resource ID of the blob private DNS zone (created by network module).')
+param blobPrivateDnsZoneId string
 
 // ---------------------------------------------------------------------------
 // Storage Account (AVM)
@@ -65,27 +65,6 @@ resource logWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' exis
 }
 
 // ---------------------------------------------------------------------------
-// Private DNS Zone for Blob
-// ---------------------------------------------------------------------------
-
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.blob.core.windows.net'
-  location: 'global'
-  tags: tags
-}
-
-resource dnsZoneVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  parent: privateDnsZone
-  name: 'link-${name}-vnet'
-  location: 'global'
-  tags: tags
-  properties: {
-    virtualNetwork: { id: vnetId }
-    registrationEnabled: false
-  }
-}
-
-// ---------------------------------------------------------------------------
 // Private Endpoint — blob subresource
 // ---------------------------------------------------------------------------
 
@@ -114,7 +93,7 @@ resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneG
     privateDnsZoneConfigs: [
       {
         name: 'blob-config'
-        properties: { privateDnsZoneId: privateDnsZone.id }
+        properties: { privateDnsZoneId: blobPrivateDnsZoneId }
       }
     ]
   }

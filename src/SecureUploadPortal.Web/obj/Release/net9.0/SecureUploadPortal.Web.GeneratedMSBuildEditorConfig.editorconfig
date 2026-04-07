@@ -24,6 +24,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/temp/azd-webapp-storage-upload/src/SecureUploadPortal.Web/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/temp/azd-webapp-storage-upload/src/SecureUploadPortal.Web/Pages/Success.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/temp/azd-webapp-storage-upload/src/SecureUploadPortal.Web/Pages/Upload.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXBsb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

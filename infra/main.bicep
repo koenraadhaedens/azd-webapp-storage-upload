@@ -1,4 +1,4 @@
-targetScope = 'resourceGroup'
+targetScope = 'subscription'
 
 // ---------------------------------------------------------------------------
 // Parameters
@@ -26,10 +26,22 @@ param tags object = {
 }
 
 // ---------------------------------------------------------------------------
+// Resource Group
+// ---------------------------------------------------------------------------
+
+var rgName = 'rg-${environment}'
+
+resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: rgName
+  location: location
+  tags: tags
+}
+
+// ---------------------------------------------------------------------------
 // Variables
 // ---------------------------------------------------------------------------
 
-var uniqueSuffix = take(uniqueString(resourceGroup().id), 6)
+var uniqueSuffix = take(uniqueString(rg.id), 6)
 
 var stName = 'st${take(replace(projectName, '-', ''), 8)}${take(environment, 3)}${uniqueSuffix}'
 var aspName = 'asp-${projectName}-${environment}'
@@ -45,6 +57,7 @@ var appiName = 'appi-${projectName}-${environment}'
 
 module monitoring 'modules/monitoring.bicep' = {
   name: 'monitoring-deploy'
+  scope: rg
   params: {
     logAnalyticsName: logName
     appInsightsName: appiName
@@ -55,6 +68,7 @@ module monitoring 'modules/monitoring.bicep' = {
 
 module network 'modules/network.bicep' = {
   name: 'network-deploy'
+  scope: rg
   params: {
     vnetName: vnetName
     location: location
@@ -66,18 +80,20 @@ module network 'modules/network.bicep' = {
 
 module storage 'modules/storage.bicep' = {
   name: 'storage-deploy'
+  scope: rg
   params: {
     name: stName
     location: location
     tags: tags
     logAnalyticsWorkspaceName: logName
     privateEndpointSubnetId: network.outputs.privateEndpointSubnetId
-    vnetId: network.outputs.vnetId
+    blobPrivateDnsZoneId: network.outputs.blobPrivateDnsZoneId
   }
 }
 
 module logicApp 'modules/logicapp.bicep' = {
   name: 'logicapp-deploy'
+  scope: rg
   params: {
     name: logicName
     location: location
@@ -89,6 +105,7 @@ module logicApp 'modules/logicapp.bicep' = {
 
 module appService 'modules/appservice.bicep' = {
   name: 'appservice-deploy'
+  scope: rg
   params: {
     planName: aspName
     appName: appName
@@ -106,6 +123,9 @@ module appService 'modules/appservice.bicep' = {
 // ---------------------------------------------------------------------------
 // Outputs (consumed by azd)
 // ---------------------------------------------------------------------------
+
+@description('Resource group name — consumed by azd.')
+output AZURE_RESOURCE_GROUP string = rg.name
 
 @description('App Service default hostname.')
 output AZURE_APP_SERVICE_URL string = 'https://${appService.outputs.defaultHostname}'

@@ -1,11 +1,11 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "metadata": {
     "_generator": {
       "name": "bicep",
       "version": "0.40.2.10011",
-      "templateHash": "12272770019999667456"
+      "templateHash": "2615171701418653349"
     }
   },
   "parameters": {
@@ -51,7 +51,8 @@
     }
   },
   "variables": {
-    "uniqueSuffix": "[take(uniqueString(resourceGroup().id), 6)]",
+    "rgName": "[format('rg-{0}', parameters('environment'))]",
+    "uniqueSuffix": "[take(uniqueString(subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('rgName'))), 6)]",
     "stName": "[format('st{0}{1}{2}', take(replace(parameters('projectName'), '-', ''), 8), take(parameters('environment'), 3), variables('uniqueSuffix'))]",
     "aspName": "[format('asp-{0}-{1}', parameters('projectName'), parameters('environment'))]",
     "appName": "[format('app-{0}-{1}-{2}', parameters('projectName'), parameters('environment'), variables('uniqueSuffix'))]",
@@ -62,9 +63,17 @@
   },
   "resources": [
     {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2021-04-01",
+      "name": "[variables('rgName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]"
+    },
+    {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2025-04-01",
       "name": "monitoring-deploy",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -3807,12 +3816,16 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('rgName'))]"
+      ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2025-04-01",
       "name": "network-deploy",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5541,13 +5554,15 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'monitoring-deploy')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'monitoring-deploy')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('rgName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2025-04-01",
       "name": "storage-deploy",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -5567,10 +5582,10 @@
             "value": "[variables('logName')]"
           },
           "privateEndpointSubnetId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'network-deploy'), '2025-04-01').outputs.privateEndpointSubnetId.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'network-deploy'), '2025-04-01').outputs.privateEndpointSubnetId.value]"
           },
           "vnetId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'network-deploy'), '2025-04-01').outputs.vnetId.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'network-deploy'), '2025-04-01').outputs.vnetId.value]"
           }
         },
         "template": {
@@ -10893,13 +10908,15 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'network-deploy')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'network-deploy')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('rgName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2025-04-01",
       "name": "logicapp-deploy",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -11122,13 +11139,15 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'monitoring-deploy')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'monitoring-deploy')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('rgName'))]"
       ]
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2025-04-01",
       "name": "appservice-deploy",
+      "resourceGroup": "[variables('rgName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -11151,16 +11170,16 @@
             "value": "[variables('logName')]"
           },
           "appInsightsConnectionString": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring-deploy'), '2025-04-01').outputs.appInsightsConnectionString.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'monitoring-deploy'), '2025-04-01').outputs.appInsightsConnectionString.value]"
           },
           "storageAccountName": {
             "value": "[variables('stName')]"
           },
           "logicAppUrl": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'logicapp-deploy'), '2025-04-01').outputs.triggerUrl.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'logicapp-deploy'), '2025-04-01').outputs.triggerUrl.value]"
           },
           "vnetIntegrationSubnetId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'network-deploy'), '2025-04-01').outputs.appServiceSubnetId.value]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'network-deploy'), '2025-04-01').outputs.appServiceSubnetId.value]"
           },
           "principalId": {
             "value": "[parameters('principalId')]"
@@ -17133,19 +17152,27 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'logicapp-deploy')]",
-        "[resourceId('Microsoft.Resources/deployments', 'monitoring-deploy')]",
-        "[resourceId('Microsoft.Resources/deployments', 'network-deploy')]"
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'logicapp-deploy')]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'monitoring-deploy')]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'network-deploy')]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', variables('rgName'))]"
       ]
     }
   ],
   "outputs": {
+    "AZURE_RESOURCE_GROUP": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource group name — consumed by azd."
+      },
+      "value": "[variables('rgName')]"
+    },
     "AZURE_APP_SERVICE_URL": {
       "type": "string",
       "metadata": {
         "description": "App Service default hostname."
       },
-      "value": "[format('https://{0}', reference(resourceId('Microsoft.Resources/deployments', 'appservice-deploy'), '2025-04-01').outputs.defaultHostname.value)]"
+      "value": "[format('https://{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'appservice-deploy'), '2025-04-01').outputs.defaultHostname.value)]"
     },
     "STORAGE_ACCOUNT_NAME": {
       "type": "string",
@@ -17159,14 +17186,14 @@
       "metadata": {
         "description": "Application Insights connection string."
       },
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'monitoring-deploy'), '2025-04-01').outputs.appInsightsConnectionString.value]"
+      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'monitoring-deploy'), '2025-04-01').outputs.appInsightsConnectionString.value]"
     },
     "LOGIC_APP_URL": {
       "type": "string",
       "metadata": {
         "description": "Logic App HTTP trigger URL (SAS-protected)."
       },
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', 'logicapp-deploy'), '2025-04-01').outputs.triggerUrl.value]"
+      "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, variables('rgName')), 'Microsoft.Resources/deployments', 'logicapp-deploy'), '2025-04-01').outputs.triggerUrl.value]"
     }
   }
 }

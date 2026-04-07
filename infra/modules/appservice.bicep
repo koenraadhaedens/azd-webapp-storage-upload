@@ -63,14 +63,14 @@ module appService 'br/public:avm/res/web/site:0.12.0' = {
   params: {
     name: appName
     location: location
-    tags: tags
+    tags: union(tags, { 'azd-service-name': 'web' })
     kind: 'app,linux'
     serverFarmResourceId: appServicePlan.outputs.resourceId
     managedIdentities: {
       systemAssigned: true
     }
     siteConfig: {
-      linuxFxVersion: 'DOTNETCORE|10.0'
+      linuxFxVersion: 'DOTNETCORE|9.0'
       alwaysOn: true
       minTlsVersion: '1.2'
       ftpsState: 'Disabled'

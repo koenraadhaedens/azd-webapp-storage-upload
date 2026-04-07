@@ -1,0 +1,32 @@
+@page
+@model SuccessModel
+@{
+    ViewData["Title"] = "Upload Successful";
+}
+
+<div class="portal-container">
+    <div class="portal-card">
+        <div class="portal-header">
+            <div class="success-icon">✅</div>
+            <h1>Upload Successful</h1>
+            <p class="subtitle">Your file has been stored securely.</p>
+        </div>
+
+        <div class="success-details">
+            <dl>
+                <dt>File name</dt>
+                <dd>@Model.FileName</dd>
+                <dt>Blob reference</dt>
+                <dd>@Model.BlobName</dd>
+            </dl>
+        </div>
+
+        <div class="security-badge">
+            <span>🔒 Stored encrypted in Azure Blob Storage</span>
+        </div>
+
+        <div style="text-align:center">
+            <a href="/Upload" class="btn-secondary">Upload another file</a>
+        </div>
+    </div>
+</div>

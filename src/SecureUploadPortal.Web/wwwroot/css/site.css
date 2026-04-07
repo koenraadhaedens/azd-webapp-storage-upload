@@ -1,0 +1,213 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    width: 100%;
+    padding: 2rem 1rem;
+}
+
+/* ── Container & Card ── */
+.portal-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem;
+}
+
+.portal-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 420px;
+}
+
+.portal-card.wide-card {
+    max-width: 560px;
+}
+
+/* ── Header ── */
+.portal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.portal-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0.25rem;
+    color: #1a202c;
+}
+
+.lock-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.subtitle {
+    color: #718096;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ── Alerts ── */
+.alert {
+    border-radius: 8px;
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+}
+
+.alert-danger {
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+}
+
+.alert-success {
+    background: #f0fff4;
+    border: 1px solid #9ae6b4;
+    color: #276749;
+}
+
+/* ── Forms ── */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #4a5568;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1.5px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2d3748;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: #fff;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.25);
+}
+
+.form-hint {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: #a0aec0;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background: #3182ce;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+    background: #2b6cb0;
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    background: #edf2f7;
+    color: #4a5568;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1.5px solid #cbd5e0;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+    margin-top: 1rem;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+/* ── Info / badge boxes ── */
+.info-box {
+    margin-top: 1.5rem;
+    padding: 0.875rem 1rem;
+    background: #ebf8ff;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #2b6cb0;
+}
+
+.info-box p {
+    margin: 0;
+}
+
+.security-badge {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+/* ── Success page ── */
+.success-icon {
+    font-size: 3rem;
+    line-height: 1;
+    text-align: center;
+}
+
+.success-details {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.25rem 0;
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+.success-details dt {
+    font-weight: 600;
+    color: #2d3748;
+    margin-top: 0.5rem;
+}
+
+.success-details dd {
+    margin: 0 0 0.25rem 0;
+    word-break: break-all;
+    color: #718096;
+}
